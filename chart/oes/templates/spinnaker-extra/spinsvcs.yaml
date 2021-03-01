@@ -1,0 +1,57 @@
+{{- if and (.Values.installSpinnaker) (not .Values.global.createIngress) }}
+{{- if not (.Values.spinnaker.gitopsHalyard.mTLS.enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin
+    stack: deck
+{{ include "oes.standard-labels" . | indent 4 }}
+  name: spin-deck-lb
+spec:
+  type: {{ .Values.k8sServiceType }}
+  ports:
+  -  name: http
+     port: 9000
+     protocol: TCP
+  selector:
+    cluster: spin-deck
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin
+    stack: gate
+{{ include "oes.standard-labels" . | indent 4 }}
+  name: spin-gate-lb
+spec:
+  type: {{ .Values.k8sServiceType }}
+  ports:
+  -  name: http
+     port: 8084
+     protocol: TCP
+  selector:
+    cluster: spin-gate
+{{- end }}
+---
+{{- if (.Values.spinnaker.gitopsHalyard.gatex509.enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin
+    cluster: spin-gate
+  name: spin-x509gate
+spec:
+  ports:
+  - port: 8085
+    protocol: TCP
+    targetPort: 8085
+  selector:
+    app: spin
+    cluster: spin-gate
+  sessionAffinity: None
+  type: LoadBalancer
+{{- end }}
+{{- end }}

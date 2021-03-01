@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: {{ .Values.db.url }}/platformdb
+    username: {{ .Values.db.username }}
+    password: {{ .Values.db.password }}
+rbacEnabled: {{ .Values.rbac.create }}
+supportedFeatures:
+{{ toYaml .Values.platform.config.supportedFeatures | indent 2 }}
+userGroup:
+  adminGroups: {{ .Values.platform.config.adminGroups }}
+user:
+  source: {{ .Values.platform.config.userSource }}
+ldap:
+  url: {{ tpl .Values.ldap.url . }}
+  managerDn: {{ .Values.ldap.managerDn }}
+  managerPassword: {{ .Values.ldap.managerPassword }}
+  groupSearchBase: {{ .Values.ldap.groupSearchBase }}
+  groupSearchFilter: {{ .Values.ldap.groupSearchFilter }}
+  groupRoleAttributes: {{ .Values.ldap.groupRoleAttributes }}
+  userDnPattern: {{ .Values.ldap.userDnPattern }}
+
+redis:
+  connection: {{ tpl .Values.redis.url . }}
+oes:
+  approvalGate:
+{{- if .Values.oesGate.port }}
+    apiUrl: {{ .Values.oesGate.protocol }}://{{ .Values.oesGate.host }}:{{ .Values.oesGate.port }}/visibilityservice/v2/approvalGates/{id}/trigger
+{{- else }}
+    apiUrl: {{ .Values.oesGate.protocol }}://{{ .Values.oesGate.host }}/visibilityservice/v2/approvalGates/{id}/trigger
+{{- end }}
+
+  verificationGate:
+{{- if .Values.oesGate.port }}
+    apiUrl: {{ .Values.oesGate.protocol }}://{{ .Values.oesGate.host }}:{{ .Values.oesGate.port }}/autopilot/api/v2/registerCanary
+{{- else }}
+    apiUrl: {{ .Values.oesGate.protocol }}://{{ .Values.oesGate.host }}/autopilot/api/v2/registerCanary
+{{- end }}

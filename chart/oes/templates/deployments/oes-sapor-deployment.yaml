@@ -1,0 +1,96 @@
+{{- if or (eq .Values.installationMode "OES-AP") (eq .Values.installationMode "OES") -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: oes
+    component: sapor
+{{ include "oes.standard-labels" . | indent 4 }}
+  name: oes-sapor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oes
+      component: sapor
+  template:
+    metadata:
+      annotations:
+        configmap/checksum: {{ (.Files.Glob "config/oes-sapor/application.yml").AsConfig | sha256sum }}
+      labels:
+        app: oes
+        component: sapor
+{{ include "oes.standard-labels" . | indent 8 }}
+    spec:
+      initContainers:
+      - name: db-check
+        image: postgres:9.6.5
+        command: ['/bin/bash', '-c', "sleep 30;echo Waiting for oes-db to be up and running; pg_isready -h oes-db -p 5432 && echo PostgreSQL DB is ready to receive connections"]
+      containers:
+      - image: {{ template "sapor.image" . }}
+        name: oes-sapor
+        ports:
+        - containerPort: 8085
+          protocol: TCP
+        volumeMounts:
+        {{- if .Values.forwarder.enabled }}
+        - mountPath: /opt/opsmx/controller/ca.crt	
+          name: ca-certs-volume	
+          subPath: tls.crt	
+        - mountPath: /opt/opsmx/controller/cert/tls.crt	
+          name: certs-volume	
+          subPath: tls.crt	
+        - mountPath: /opt/opsmx/controller/cert/tls.key	
+          name: certs-volume	
+          subPath: tls.key
+        {{- end }}
+        - name: sapor-config-volume
+          mountPath: /opt/opsmx/application.yml
+          subPath: application.yml
+        {{- if .Values.sapor.config.caCerts.override }}
+        - name: certs-volume
+          mountPath: /etc/pki/ca-trust/extracted/java
+        {{- end }}
+        {{- if .Values.sapor.config.spinnaker.x509.enabled }}
+        - name: certs-x509-volume
+          mountPath: /opt/opsmx/client.p12
+          subPath: client.p12
+        {{- end }}
+        resources:
+{{ toYaml .Values.sapor.resources | indent 12 }}
+        readinessProbe:
+          tcpSocket:
+            port: 8085
+          initialDelaySeconds: 120
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /mgmt/health
+            port: 8085
+          initialDelaySeconds: 180
+          periodSeconds: 60
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecret }}
+      volumes:
+      {{- if .Values.forwarder.enabled }}
+      - secret:	
+          secretName: oes-command-secret
+        name: certs-volume
+      - secret:	
+          secretName: ca-secret
+        name: ca-certs-volume
+      {{- end }}
+      - configMap:
+          name: oes-sapor-config
+        name: sapor-config-volume
+      {{- if .Values.sapor.config.caCerts.override }}
+      - name: certs-volume
+        configMap:
+          name: sapor-certs
+      {{- end -}}
+      {{- if .Values.sapor.config.spinnaker.x509.enabled }}
+      - name: certs-x509-volume
+        configMap:
+          name: oes-sapor-x509-config
+      {{- end -}}
+{{- end -}}

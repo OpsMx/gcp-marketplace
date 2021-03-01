@@ -1,0 +1,42 @@
+apiVersion: v2
+name: oes
+version: 3.5.5
+appVersion: 3.5.1
+description: OES is a non-forked version of OSS spinnaker
+icon: https://www.opsmx.com/images/logo.png
+maintainers:
+- email: abhinay.byrisetty@opsmx.io
+  name: abhinaybyrisetty
+- email: vamsi.krishna@opsmx.io
+  name: vkvamsi
+- email: nirmalya@opsmx.io
+  name: nirmalyasen
+- email: srinivas@opsmx.io
+  name: ksrinimba
+keywords:
+  - OpsMx
+  - OES
+  - Autopilot
+home: https://www.opsmx.com/
+dependencies:
+  - name: openldap
+    version: 1.2.3
+    condition: installOpenLdap
+  - name: spinnaker
+    version: 2.2.3
+    condition: installSpinnaker
+  - name: redis
+    version: 10.5.3
+    condition: installRedis
+  - name: elasticsearch
+    version: 7.5.0
+    condition: enableCentralLogging
+  - name: kibana
+    version: 7.5.0
+    condition: enableCentralLogging
+  - name: fluent-bit
+    version: 2.8.2
+    condition: enableCentralLogging
+  - name: prometheus
+    version: 11.16.2
+    condition: spinnaker.enableCentralMonitoring

@@ -1,0 +1,45 @@
+oes:
+  rbac:
+    enabled: true
+spinnaker:
+  authnEnabled: {{ .Values.sapor.config.spinnaker.authnEnabled }}
+  baseurl: {{ .Values.sapor.config.spinnaker.spinGateURL }}
+{{- if .Values.sapor.config.spinnaker.spinExternalGateURL }}
+  externalBaseUrl: {{ .Values.sapor.config.spinnaker.spinExternalGateURL }}
+{{- else }}
+  externalBaseUrl: {{ .Values.global.spinGate.protocol }}://{{ .Values.global.spinGate.host }}
+{{- end }}
+  ldap:
+    enabled: {{ .Values.sapor.config.spinnaker.ldap.ldapEnabled }}
+    username: {{ .Values.sapor.config.spinnaker.ldap.ldapUsername }}
+    password: {{ .Values.sapor.config.spinnaker.ldap.ldapPassword }}
+    adminLoginEnabled: {{ .Values.sapor.config.spinnaker.ldap.ldapAdminLoginEnabled }}
+    adminUsername: {{ .Values.sapor.config.spinnaker.ldap.ldapAdminUsername }}
+    adminPassword: {{ .Values.sapor.config.spinnaker.ldap.ldapAdminPassword }}
+  x509:
+    enabled: {{ .Values.sapor.config.spinnaker.x509.enabled }}
+    client:
+      file: /opt/opsmx/client.p12
+      password: {{ .Values.sapor.config.spinnaker.x509.client.password }}
+spring:
+  datasource:
+    url: {{ .Values.db.url }}/oesdb
+    username: {{ .Values.db.username }}
+    password: {{ .Values.db.password }}
+datasources:
+  platform: {{ .Values.sapor.config.datasources.platform }}
+  
+## Set the below field to true if agent for kubernetes
+kubernetes:
+  agent:
+    enabled: {{ .Values.forwarder.enabled }}
+    serverHostName: {{ .Values.forwarder.externalName }}
+    serverPort: 9003
+    caCertfile: /opt/opsmx/controller/ca.crt
+    certFile: /opt/opsmx/controller/cert/tls.crt
+    keyFile: /opt/opsmx/controller/cert/tls.key
+    image: {{ .Values.forwarder.agent.image }}
+  template:
+    path: /opt/opsmx/controller
+    kubectlTemplateFileName: kubeconfig.template
+    manifestTemplateFileName: deploy-agent.template
