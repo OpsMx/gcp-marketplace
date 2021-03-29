@@ -1,0 +1,60 @@
+# v1 or v2 specific sections are omitted.
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  imageCredentials.registry:
+    type: string
+    title: Image Registry URL
+    description: Image Registry URL.
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  imageCredentials.username:
+    type: string
+    title:  Registry Username
+    description: Registry Username for authentication.
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  imageCredentials.password:
+    type: string
+    title: Registry Password
+    description: Registry Password
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  installSpinnaker:
+    type: boolean
+    title: To Install Spinnaker
+    description: To enable or disable  Spinnaker installation along with OES
+    default: true
+  global.spinDeck.host:
+    type: string
+    title: Spinnaker Deck Host URL
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  global.spinGate.host:
+    type: string
+    title: Spinnaker Gate Host URL
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+required:
+- name
+- namespace
+- imageCredentials.registry
+- imageCredentials.username
+- imageCredentials.password
+- installSpinnaker
+- global.spinDeck.host
+- global.spinGate.host

@@ -1,0 +1,44 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }} OR https://www.opsmx.com/images/logo.png
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "opsmx", "product_id": "OES", "partner_name": "OPSMX"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: OES
+    version: "$version"
+    description: |-
+
+    maintainers:
+    - name: OpsMx
+      url: https://opsmx.com
+    links:
+    - description: 'User Guide: Google Click to Deploy OES'
+      url: https://github.com/OpsMx/gcp-marketplace/blob/main/README.md
+    - description: 'Getting started with OES'
+      url: URL TO OES USER GUIDE
+    notes: |-
+    ADD some basic Notes on OES
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: Deployment
+  - group: extensions/v1beta1
+    kind: Ingress

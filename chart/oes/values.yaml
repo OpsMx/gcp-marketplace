@@ -15,8 +15,8 @@ imagePullSecret: opsmxdev-secret
 ##
 imageCredentials:
   registry: https://quay.io/
-  username: quayID  # Quay username
-  password: quayPassword # Quay password
+  username:   # Quay username
+  password:  # Quay password
   email: info@opsmx.com   # email corresponding to quay registry ID
 
 rbac:
@@ -45,7 +45,7 @@ global:
   ## certificates under oesUI.tls.secretName & oesGate.tls.secretName
 
   certManager:
-    installed: true
+    installed: false
 
   ## Set to true to expose oes-ui, oes-gate services over ingress
   ##
@@ -206,7 +206,7 @@ autopilot:
       keyStorePassword: dummypwd # Provide keystore password
       keyStoreType: PKCS12
       keyAlias: tomcat
-    
+
     ## server.host.dns.name is fetched from oesUI.host
     ##
 
