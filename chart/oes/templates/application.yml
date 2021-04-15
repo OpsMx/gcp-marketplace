@@ -5,25 +5,13 @@ metadata:
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
       data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}    --- Place the Logo file (OR) https://www.opsmx.com/images/logo.png
-    marketplace.cloud.google.com/deploy-info: '{"partner_id": "opsmx", "product_id": "OES", "partner_name": "OPSMX"}'
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "opsmx", "product_id": "OES", "partner_name": "OpsMx"}'
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
     type: OES
-    version: "$version"
-    description: |-
-
-    maintainers:
-    - name: OpsMx
-      url: https://opsmx.com
-    links:
-    - description: 'User Guide: Google Click to Deploy OES'
-      url: https://github.com/OpsMx/gcp-marketplace/blob/main/README.md
-    - description: 'Getting started with OES'
-      url: URL TO OES USER GUIDE
-    notes: |-
-    ADD some basic Notes on OES
+    version: '3.6.2'
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

@@ -13,8 +13,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-ssl-secret: {{ .Release.Namespace }}/mtlscerts-pkcs12
     nginx.ingress.kubernetes.io/proxy-ssl-server-name: spin-deck.{{ .Release.Namespace }}.svc
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
   name: spinnaker-deck-ingress
 spec:
   rules:
@@ -43,8 +41,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-ssl-secret: {{ .Release.Namespace }}/mtlscerts-pkcs12
     nginx.ingress.kubernetes.io/proxy-ssl-server-name: spin-gate.{{ .Release.Namespace }}.svc
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
   name: spinnaker-gate-ingress
 spec:
   rules:

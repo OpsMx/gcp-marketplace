@@ -1,7 +1,7 @@
-include ../crd.Makefile
-include ../gcloud.Makefile
-include ../var.Makefile
-include ../images.Makefile
+include crd.Makefile
+include gcloud.Makefile
+include var.Makefile
+include images.Makefile
 
 CHART_NAME := oes-gmp
 APP_ID ?= $(CHART_NAME)

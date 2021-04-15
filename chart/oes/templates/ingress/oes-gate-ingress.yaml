@@ -1,4 +1,5 @@
-{{- if .Values.global.createIngress }}
+{{- if .Values.global.createIngress -}}
+{{- if or (eq .Values.installationMode "OES-AP") (eq .Values.installationMode "OES") -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -12,7 +13,7 @@ metadata:
 {{- if .Values.oesGate.ingress.annotations }}
 {{ tpl (toYaml .Values.oesGate.ingress.annotations) . | indent 4 }}
 {{- end }}
-  name: oes-gate-ingress
+  name: {{ template "oes.fullname" . }}-gate
 spec:
   rules:
   - host: {{ .Values.oesGate.host }}
@@ -22,8 +23,11 @@ spec:
           serviceName: oes-gate
           servicePort: 8084
         path: /
+{{- if .Values.oesGate.ingress.tls }}
   tls:
   - hosts:
     - {{ .Values.oesGate.host }}
-    secretName: {{ .Values.oesGate.ingress.tls.secretName }}
+{{ toYaml .Values.oesGate.ingress.tls | indent 4 }}
+{{- end }}
+{{- end }}
 {{- end }}

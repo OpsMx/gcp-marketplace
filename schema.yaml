@@ -4,13 +4,15 @@ x-google-marketplace:
 
   applicationApiVersion: v1beta1
 
-  publishedVersion: "$TAG"
+  publishedVersion: "3.6.2"
   publishedVersionMetadata:
     releaseNote: >-
       A regular update.
     releaseTypes:
       - Feature
     recommended: false
+
+  images: {}
 
 properties:
   name:
@@ -21,21 +23,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  imageCredentials.registry:
-    type: string
-    title: Image Registry URL
-    description: Image Registry URL.
-    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
-  imageCredentials.username:
-    type: string
-    title:  Registry Username
-    description: Registry Username for authentication.
-    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
-  imageCredentials.password:
-    type: string
-    title: Registry Password
-    description: Registry Password
-    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
   installSpinnaker:
     type: boolean
     title: To Install Spinnaker
@@ -45,16 +32,27 @@ properties:
     type: string
     title: Spinnaker Deck Host URL
     pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+    default: spin-gcp.opsmx.com
   global.spinGate.host:
     type: string
     title: Spinnaker Gate Host URL
     pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+    default: spin-gate-gcp.opsmx.com
+  oesUI.host:
+    type: string
+    title: Spinnaker Gate Host URL
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+    default: oes-gcp.opsmx.com
+  oesGate.host:
+    type: string
+    title: Spinnaker Gate Host URL
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+    default: oes-gate-gcp.opsmx.com
 required:
 - name
 - namespace
-- imageCredentials.registry
-- imageCredentials.username
-- imageCredentials.password
 - installSpinnaker
 - global.spinDeck.host
 - global.spinGate.host
+- oesUI.host
+- oesGate.host
