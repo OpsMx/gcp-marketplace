@@ -29,7 +29,7 @@ installSpinnaker: true
 ## Installation mode
 ## Available installation modes OES-AP, OES, AP, None
 ##
-installationMode: OES
+installationMode: OES-AP
 
 ## OES UI & Gate service type
 ##
@@ -82,7 +82,7 @@ oesUI:
 
   ingress:
     annotations:
-      kubernetes.io/ingress.class: gce
+      kubernetes.io/ingress.class: nginx
 
 ## OES-Gate url configuration
 oesGate:
@@ -93,7 +93,7 @@ oesGate:
 
   ingress:
     annotations:
-      kubernetes.io/ingress.class: gce
+      kubernetes.io/ingress.class: nginx
 
 ####################################################
 ## Redis configuration
