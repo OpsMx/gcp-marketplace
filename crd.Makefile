@@ -14,5 +14,4 @@ crd/install:
 crd/uninstall:
 	kubectl delete -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 
-
 endif
