@@ -82,7 +82,7 @@ oesUI:
 
   ingress:
     annotations:
-      kubernetes.io/ingress.class: nginx
+      kubernetes.io/ingress.class: gce
 
 ## OES-Gate url configuration
 oesGate:
@@ -93,7 +93,7 @@ oesGate:
 
   ingress:
     annotations:
-      kubernetes.io/ingress.class: nginx
+      kubernetes.io/ingress.class: gce
 
 ####################################################
 ## Redis configuration
