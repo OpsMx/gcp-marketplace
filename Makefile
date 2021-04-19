@@ -23,10 +23,7 @@ TEST_NS:=test-oes-ns
 .PHONY: test-install
 test-install:
 	kubectl create namespace $(TEST_NS)
-# for now, do this to create the service accounts needed for the installer
-#	helm template chart/glooctlinstaller/ --name test --namespace $(TEST_NS) --set rbac=true,marketplaceResources=false | kubectl apply -f -
-# note that we can subsitute name and namespace only
-# other values will be set from defaults during the below test command:
+	kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 	mpdev /scripts/install \
   --deployer=$(REGISTRY)/$(APP_NAME)/deployer:$(DEPLOYER_IMAGE_VERSION) \
   --parameters='{"name": "test-install", "namespace": "$(TEST_NS)"}'
@@ -38,4 +35,4 @@ cleanup-cluster:
 
 .PHONY: mpdev-verify
 mpdev-verify:
-		mpdev /scripts/verify   --deployer=gcr.io/opsmx-images/gloo/deployer:$(DEPLOYER_IMAGE_VERSION)
+		mpdev /scripts/verify   --deployer=gcr.io/opsmx-images/oes/deployer:$(DEPLOYER_IMAGE_VERSION)

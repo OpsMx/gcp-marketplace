@@ -933,6 +933,8 @@ spinnaker:
   #   accessKey: ""
   #   containerName: "spinnaker"
 
+  # When installed via GCP marketplace; necessary RBAC resources are
+  # created by GCP deployer; hence setting this to false
   rbac:
     # Specifies whether RBAC resources should be created
     create: false
